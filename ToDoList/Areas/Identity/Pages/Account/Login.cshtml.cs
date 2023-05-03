@@ -73,7 +73,7 @@ namespace ToDoList.Areas.Identity.Pages.Account
             ReturnUrl = returnUrl;
         }
 
-        public async Task<IActionResult> OnPostAsync(InputModel model, string returnUrl = null)
+        public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl = returnUrl ?? Url.Content("~/");
 
@@ -81,13 +81,13 @@ namespace ToDoList.Areas.Identity.Pages.Account
             // To enable password failures to trigger account lockout, set lockoutOnFailure: true
             //var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
 
-            if (model.Email.IndexOf('@') > -1)
+            if (Input.Email.IndexOf('@') > -1)
             {
                 //Validate email format
                 MailAddress mailAddress;
                 try
                 {
-                    mailAddress = new MailAddress(model.Email);
+                    mailAddress = new MailAddress(Input.Email);
                 }
                 catch
                 {
@@ -108,7 +108,7 @@ namespace ToDoList.Areas.Identity.Pages.Account
                 //validate Username format
                 string emailRegex = @"^[a-zA-Z0-9]*$";
                 Regex re = new Regex(emailRegex);
-                if (!re.IsMatch(model.Email))
+                if (!re.IsMatch(Input.Email))
                 {
                     ModelState.AddModelError("Email", "Username is not valid");
                 }
@@ -116,10 +116,10 @@ namespace ToDoList.Areas.Identity.Pages.Account
 
             if (ModelState.IsValid)
             {
-                var userName = model.Email;
+                var userName = Input.Email;
                 if (userName.IndexOf('@') > -1)
                 {
-                    var user = await _userManager.FindByEmailAsync(model.Email);
+                    var user = await _userManager.FindByEmailAsync(Input.Email);
                     if (user == null)
                     {
                         ModelState.AddModelError(string.Empty, "Invalid login attempt.");
@@ -130,7 +130,7 @@ namespace ToDoList.Areas.Identity.Pages.Account
                         userName = user.UserName;
                     }
                 }
-                var result = await _signInManager.PasswordSignInAsync(userName, model.Password, model.RememberMe, lockoutOnFailure: false);
+                var result = await _signInManager.PasswordSignInAsync(userName, Input.Password, Input.RememberMe, lockoutOnFailure: false);
 
                 if (result.Succeeded)
                 {

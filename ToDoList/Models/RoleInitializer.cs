@@ -21,7 +21,7 @@ namespace ToDoList.Models
             string adminPassword = "1qaz!QAZ";
             if (await userManager.FindByEmailAsync(adminEmail) == null)
             {
-                IdentityUser admin = new IdentityUser { Email = adminEmail, UserName = "admin@gmail.com", EmailConfirmed = true };
+                IdentityUser admin = new IdentityUser { Email = adminEmail, UserName = "admin", EmailConfirmed = true };
                 IdentityResult result = await userManager.CreateAsync(admin, adminPassword);
                 if (result.Succeeded)
                 {
@@ -33,7 +33,7 @@ namespace ToDoList.Models
             string userPassword = "1qaz!QAZ";
             if (await userManager.FindByEmailAsync(userEmail) == null)
             {
-                IdentityUser user = new IdentityUser { Email = userEmail, UserName = "user@gmail.com", EmailConfirmed = true };
+                IdentityUser user = new IdentityUser { Email = userEmail, UserName = "user", EmailConfirmed = true };
                 IdentityResult result = await userManager.CreateAsync(user, userPassword);
                 if (result.Succeeded)
                 {
