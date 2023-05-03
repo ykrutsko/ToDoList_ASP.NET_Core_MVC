@@ -121,5 +121,16 @@ namespace ToDoList.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
         }
+
+        public async Task<ActionResult> Delete(int id)
+        {
+            Job job = await _context.Jobs.SingleOrDefaultAsync<Job>(j => j.Id == id);
+            if (job is null)
+                return NotFound();
+
+            _context.Jobs.Remove(job);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index");
+        }
     }
 }
