@@ -49,5 +49,26 @@ namespace ToDoList.Controllers
             return RedirectToAction("Index", TempData);
         }
 
+        [HttpPost]
+        public async Task<ActionResult> AddNewStatus(Settings model)
+        {
+            JobStatus jobStatus = await _context.JobStatuses.SingleOrDefaultAsync(m => m.Name == model.StatusName);
+
+            if (jobStatus == null)
+            {
+                JobStatus newJobStatus = new JobStatus
+                {
+                    Name = model.StatusName
+                };
+                await _context.JobStatuses.AddAsync(newJobStatus);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                TempData["Error"] = "This status is already exists!";
+            };
+            return RedirectToAction("Index", TempData);
+        }
     }
 }
