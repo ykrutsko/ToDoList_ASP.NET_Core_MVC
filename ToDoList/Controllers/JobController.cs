@@ -14,11 +14,13 @@ namespace ToDoList.Controllers
     {
         private readonly AppDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly IdentityUser _user;
 
         public JobController(AppDbContext context, UserManager<IdentityUser> userManager)
         {
             _context = context;
             _userManager = userManager;
+            _user = _userManager.GetUserAsync(HttpContext.User).Result;
         }
 
         public async Task<IActionResult> Index()
@@ -64,6 +66,26 @@ namespace ToDoList.Controllers
             }
             await _context.SaveChangesAsync();
             return RedirectToAction("Index", "Job");
+        }
+
+        public async Task<IActionResult> New()
+        {
+            NewJobViewModel viewModel = new NewJobViewModel();
+            try
+            {
+                viewModel.JobPriorities = await _context.JobPriorities.ToListAsync<JobPriority>();
+                viewModel.JobStatuses = await _context.JobStatuses.ToListAsync<JobStatus>();
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Error", "Home", new { errorMessage = ex.Message });
+            }
+
+            viewModel.Job = new Job();
+            viewModel.User = _user;
+            viewModel.PageTitle = "New Job";
+
+            return View("JobForm", viewModel);
         }
     }
 }
