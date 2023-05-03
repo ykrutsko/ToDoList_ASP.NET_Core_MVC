@@ -79,7 +79,6 @@ namespace ToDoList.Areas.Identity.Pages.Account
 
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-            //var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
 
             if (Input.Email.IndexOf('@') > -1)
             {
@@ -93,15 +92,6 @@ namespace ToDoList.Areas.Identity.Pages.Account
                 {
                     ModelState.AddModelError("Email", "Email is not valid");
                 }
-
-                //string emailRegex = @"^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}" +
-                //                       @"\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\" +
-                //                          @".)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$";
-                //Regex re = new Regex(emailRegex);
-                //if (!re.IsMatch(model.Email))
-                //{
-                //    ModelState.AddModelError("Email", "Email is not valid");
-                //}
             }
             else
             {
