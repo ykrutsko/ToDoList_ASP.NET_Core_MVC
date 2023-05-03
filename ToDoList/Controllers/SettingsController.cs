@@ -100,5 +100,33 @@ namespace ToDoList.Controllers
                 return Json(Message);
             }
         }
+
+        public async Task<ActionResult> DeleteStatus(int id)
+        {
+            JobStatus jobStatus = await _context.JobStatuses.SingleOrDefaultAsync(x => x.Id == id);
+            List<Job> jobList = await _context.Jobs.Include(x => x.JobStatus).ToListAsync();
+            int statusListCount = await _context.JobStatuses.CountAsync();
+            var Message = string.Empty;
+
+            foreach (var item in jobList)
+            {
+                if (item.JobStatus.Name == jobStatus.Name)
+                {
+                    Message = "We have a task with this status";
+                    return Json(Message);
+                }
+            }
+            if (statusListCount <= 1)
+            {
+                Message = "We should have at least one status!";
+                return Json(Message);
+            }
+            else
+            {
+                _context.Remove(jobStatus);
+                await _context.SaveChangesAsync();
+                return Json(Message);
+            }
+        }
     }
 }
