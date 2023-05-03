@@ -14,14 +14,13 @@ namespace ToDoList.Controllers
     {
         private readonly AppDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
-        private readonly IdentityUser _user;
 
         public JobController(AppDbContext context, UserManager<IdentityUser> userManager)
         {
             _context = context;
             _userManager = userManager;
-            _user = _userManager.GetUserAsync(HttpContext.User).Result;
         }
+
 
         public async Task<IActionResult> Index()
         {
@@ -75,6 +74,7 @@ namespace ToDoList.Controllers
             {
                 viewModel.JobPriorities = await _context.JobPriorities.ToListAsync<JobPriority>();
                 viewModel.JobStatuses = await _context.JobStatuses.ToListAsync<JobStatus>();
+                viewModel.User = await _userManager.GetUserAsync(User);
             }
             catch (Exception ex)
             {
@@ -82,7 +82,6 @@ namespace ToDoList.Controllers
             }
 
             viewModel.Job = new Job();
-            viewModel.User = _user;
             viewModel.PageTitle = "New Job";
 
             return View("JobForm", viewModel);
@@ -98,7 +97,7 @@ namespace ToDoList.Controllers
                     return NotFound();
 
                 viewModel.Job = job;
-                viewModel.User = _user;
+                viewModel.User = await _userManager.GetUserAsync(User);
                 viewModel.JobPriorities = await _context.JobPriorities.ToListAsync<JobPriority>();
                 viewModel.JobStatuses = await _context.JobStatuses.ToListAsync<JobStatus>();
             }
