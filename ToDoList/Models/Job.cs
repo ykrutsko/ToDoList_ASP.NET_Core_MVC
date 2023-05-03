@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Xml.Linq;
 using System;
+using Microsoft.AspNetCore.Identity;
 
 namespace ToDoList.Models
 {
@@ -22,7 +23,7 @@ namespace ToDoList.Models
         [Display(Name = "Deadline")]
         public DateTime DueDate { get; set; }
 
-        public string CreationUser { get; set; }
+        public IdentityUser User { get; set; }
 
         public bool IsDone { get; set; }
 

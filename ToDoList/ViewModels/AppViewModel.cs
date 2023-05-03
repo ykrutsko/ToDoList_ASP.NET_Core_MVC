@@ -12,6 +12,6 @@ namespace ToDoList.ViewModels
         public IEnumerable<JobPriority> JobPriorities { get; set; }
         public JobStatus JobStatus { get; set; }
         public IEnumerable<JobStatus> JobStatuses { get; set; }
-        public IdentityUser CurrentUser { get; set; }
+        public IdentityUser User { get; set; }
     }
 }
