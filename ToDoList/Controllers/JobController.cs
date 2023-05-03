@@ -87,5 +87,28 @@ namespace ToDoList.Controllers
 
             return View("JobForm", viewModel);
         }
+
+        public async Task<IActionResult> Edit(int id)
+        {
+            NewJobViewModel viewModel = new NewJobViewModel();
+            try
+            {
+                Job job = await _context.Jobs.SingleOrDefaultAsync<Job>(j => j.Id == id);
+                if (job is null)
+                    return NotFound();
+
+                viewModel.Job = job;
+                viewModel.User = _user;
+                viewModel.JobPriorities = await _context.JobPriorities.ToListAsync<JobPriority>();
+                viewModel.JobStatuses = await _context.JobStatuses.ToListAsync<JobStatus>();
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Error", "Home", new { errorMessage = ex.Message });
+            }
+            viewModel.PageTitle = "Edit Job";
+
+            return View("JobForm", viewModel);
+        }
     }
 }
