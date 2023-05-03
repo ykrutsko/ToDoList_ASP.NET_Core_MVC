@@ -10,7 +10,6 @@ using ToDoList.Models;
 
 namespace ToDoList.Controllers
 {
-    [Authorize]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
