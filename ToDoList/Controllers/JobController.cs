@@ -110,5 +110,16 @@ namespace ToDoList.Controllers
 
             return View("JobForm", viewModel);
         }
+
+        public async Task<IActionResult> Complete(int id)
+        {
+            Job job = await _context.Jobs.SingleOrDefaultAsync<Job>(j => j.Id == id);
+            if (job is null)
+                return NotFound();
+
+            job.IsDone = !job.IsDone;
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index");
+        }
     }
 }
