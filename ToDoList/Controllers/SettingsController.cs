@@ -25,5 +25,29 @@ namespace ToDoList.Controllers
             };
             return View("Index", viewModel);
         }
+
+        [HttpPost]
+        public async Task<ActionResult> AddNewPriority(Settings model)
+        {
+            JobPriority jobPriority = await _context.JobPriorities.SingleOrDefaultAsync(m => m.Name == model.PriorityName);
+
+            if (jobPriority == null)
+            {
+                JobPriority newJobPriority = new JobPriority
+                {
+                    Name = model.PriorityName
+                };
+                await _context.JobPriorities.AddAsync(newJobPriority);
+                await _context.SaveChangesAsync();
+
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                TempData["Error"] = "This priority is already exists!";
+            };
+            return RedirectToAction("Index", TempData);
+        }
+
     }
 }
