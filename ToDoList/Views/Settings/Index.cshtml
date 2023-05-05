@@ -1,78 +1,64 @@
 ﻿@model ToDoList.Models.Settings
-
-
 <h1>Settings</h1>
 
-<p style="color:red">@TempData["Error"]</p>
-
-<div class="main">
-    <div class="first">
-        <div>
-            <h5>List of priorities:</h5>
-
-            <div class="form-row">
-                @using (Html.BeginForm("AddNewPriority", "Settings"))
-                {
-                    <div class="form-group">
-                        @Html.TextBoxFor(m => m.PriorityName, new { @class = "form-control", @placeholder = "New Priority" })
-                    </div>
-                    <button id="SavePriority" type="submit" class="btn btn-sm btn-primary">Add a new priority</button>
-                }
-            </div>
-            <table id="Priorities" class="table table-striped">
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th></th>
-                    </tr>
-                </thead>
-                @foreach (var priority in Model.JobPriorities)
-                {
-                    <tr>
-                        <td>@priority.Name</td>
-                        <td>
-                            <button data-Priority-id="@priority.Id" class="btn btn-primary btn-sm js-delete-type">Delete</button>
-                        </td>
-                    </tr>
-                }
-            </table>
-        </div>
-    </div>
-
-    <div style="height:30px"></div>
-
-    <div class="first">
-        <h5>List of statuses:</h5>
-
-        <div class="form-row">
-            @using (Html.BeginForm("AddNewStatus", "Settings"))
-            {
-                <div class="form-group">
-                    @Html.TextBoxFor(m => m.StatusName, new { @class = "form-control", @placeholder = "New Status" })
+<div class="container">
+    <div class="row">
+        <div class="col-md-5">
+            <div>
+                <h5>List of priorities:</h5>
+                <div class="form-row">
+                    @using (Html.BeginForm("AddNewPriority", "Settings"))
+                    {
+                        <div class="form-group">
+                            @Html.TextBoxFor(m => m.PriorityName, new { @class = "form-control", @placeholder = "New Priority" })
+                        </div>
+                        <p style="color:red">@TempData["ErrorPriority"]</p>
+                        <button id="SavePriority" type="submit" class="btn btn-sm btn-primary">Add a new priority</button>
+                    }
                 </div>
-                <button id="SaveStatus" type="submit" class="btn btn-sm btn-primary">Add a new status</button>
-            }
+                <table id="Priorities" class="table table-striped mt-3">
+                    @foreach (var priority in Model.JobPriorities)
+                    {
+                        <tr>
+                            <td>@priority.Name</td>
+                            <td>
+                                <button data-Priority-id="@priority.Id" class="btn btn-primary btn-sm js-delete-type">Delete</button>
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
         </div>
-
-        <table id="Statuses" class="table table-striped">
-            <thead>
-                <tr>
-                    <th></th>
-                    <th></th>
-                </tr>
-            </thead>
-            @foreach (var status in Model.JobStatuses)
-            {
-                <tr>
-                    <td>@status.Name</td>
-                    <td>
-                        <button data-Status-id="@status.Id" class="btn btn-primary btn-sm js-delete-status">Delete</button>
-                    </td>
-                </tr>
-            }
-        </table>
+        <div class="col-md-5">
+            <div>
+                <h5>List of statuses:</h5>
+                <div class="form-row">
+                    @using (Html.BeginForm("AddNewStatus", "Settings"))
+                    {
+                        <div class="form-group">
+                            @Html.TextBoxFor(m => m.StatusName, new { @class = "form-control", @placeholder = "New Status" })
+                        </div>
+                        <p style="color:red">@TempData["ErrorStatus"]</p>
+                        <button id="SaveStatus" type="submit" class="btn btn-sm btn-primary">Add a new status</button>
+                    }
+                </div>
+                <table id="Statuses" class="table table-striped mt-3">
+                    @foreach (var status in Model.JobStatuses)
+                    {
+                        <tr>
+                            <td>@status.Name</td>
+                            <td>
+                                <button data-Status-id="@status.Id" class="btn btn-primary btn-sm js-delete-status">Delete</button>
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
+        </div>
     </div>
 </div>
+
+
 
 
 @section scripts{

@@ -36,7 +36,7 @@ namespace ToDoList.Controllers
             if (jobPriority == null)
             {
                 if(string.IsNullOrEmpty(model.PriorityName))
-                    TempData["Error"] = "Priority name is required!";
+                    TempData["ErrorPriority"] = "Priority name is required!";
                 else
                 {
                     JobPriority newJobPriority = new JobPriority
@@ -51,7 +51,7 @@ namespace ToDoList.Controllers
             }
             else
             {
-                TempData["Error"] = "This priority is already exists!";
+                TempData["ErrorPriority"] = "This priority is already exists!";
             };
             return RedirectToAction("Index", TempData);
         }
@@ -64,7 +64,7 @@ namespace ToDoList.Controllers
             if (jobStatus == null)
             {
                 if (string.IsNullOrEmpty(model.StatusName))
-                    TempData["Error"] = "Status name is required!";
+                    TempData["ErrorStatus"] = "Status name is required!";
                 else
                 {
                     JobStatus newJobStatus = new JobStatus
@@ -78,7 +78,7 @@ namespace ToDoList.Controllers
             }
             else
             {
-                TempData["Error"] = "This status is already exists!";
+                TempData["ErrorStatus"] = "This status is already exists!";
             };
             return RedirectToAction("Index", TempData);
         }
