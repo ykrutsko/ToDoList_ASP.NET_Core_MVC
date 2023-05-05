@@ -8,11 +8,11 @@ namespace ToDoList.Controllers.api
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class JobController : ControllerBase
+    public class JobsController : ControllerBase
     {
         private readonly AppDbContext _context;
 
-        public JobController(AppDbContext context)
+        public JobsController(AppDbContext context)
         {
             _context = context;
         }
@@ -21,7 +21,7 @@ namespace ToDoList.Controllers.api
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Job>>> Get()
         {
-            return await _context.Jobs.Include(x=>x.JobPriority).Include(x=>x.JobStatus).ToListAsync();
+            return await _context.Jobs.Include(x => x.JobPriority).Include(y => y.JobStatus).ToListAsync();
         }
 
         // GET the task by id api/Jobs/id
