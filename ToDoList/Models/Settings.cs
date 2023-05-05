@@ -6,7 +6,6 @@ namespace ToDoList.Models
     public class Settings
     {
         public int PriorityId { get; set; }
-
         [Required]
         public string PriorityName { get; set; }
 
