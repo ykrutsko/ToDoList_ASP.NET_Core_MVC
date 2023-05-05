@@ -78,6 +78,5 @@ namespace ToDoList.Controllers.api
             await _context.SaveChangesAsync();
             return Ok(job);
         }
-
     }
 }
