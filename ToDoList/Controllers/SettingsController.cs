@@ -35,14 +35,19 @@ namespace ToDoList.Controllers
 
             if (jobPriority == null)
             {
-                JobPriority newJobPriority = new JobPriority
+                if(string.IsNullOrEmpty(model.PriorityName))
+                    TempData["Error"] = "Priority name is required!";
+                else
                 {
-                    Name = model.PriorityName
-                };
-                await _context.JobPriorities.AddAsync(newJobPriority);
-                await _context.SaveChangesAsync();
+                    JobPriority newJobPriority = new JobPriority
+                    {
+                        Name = model.PriorityName
+                    };
+                    await _context.JobPriorities.AddAsync(newJobPriority);
+                    await _context.SaveChangesAsync();
 
-                return RedirectToAction("Index");
+                    return RedirectToAction("Index");
+                }                
             }
             else
             {
