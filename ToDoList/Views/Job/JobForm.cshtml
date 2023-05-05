@@ -2,7 +2,7 @@
 
 <h4 id="PageTitle">@Model.PageTitle</h4>
 
-@using (Html.BeginForm("Save", "Issue"))
+@using (Html.BeginForm("Save", "Job"))
 {
     <div class="form-group">
         @Html.LabelFor(m => m.Job.Name)
@@ -52,7 +52,7 @@
         @Html.TextAreaFor(m => m.Job.Description, new { @class = "form-control" })
     </div>
 
-    @Html.HiddenFor(m => m.Job.User, new { @id = "CreationUser" })
+    @Html.HiddenFor(m => m.Job.CreationUser, new { @id = "CreationUser" })
     @Html.HiddenFor(m => m.Job.Id)
     @Html.AntiForgeryToken()
     <button id="SaveButton" type="submit" class="btn btn-primary">Save</button>

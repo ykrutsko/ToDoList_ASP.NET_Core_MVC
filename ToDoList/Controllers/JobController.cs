@@ -13,12 +13,12 @@ namespace ToDoList.Controllers
     public class JobController : Controller
     {
         private readonly AppDbContext _context;
-        private readonly UserManager<IdentityUser> _userManager;
+        //private readonly UserManager<IdentityUser> _userManager;
 
-        public JobController(AppDbContext context, UserManager<IdentityUser> userManager)
+        public JobController(AppDbContext context /*UserManager<IdentityUser> userManager*/)
         {
             _context = context;
-            _userManager = userManager;
+            //_userManager = userManager;
         }
 
 
@@ -49,7 +49,7 @@ namespace ToDoList.Controllers
                     Job = job,
                     JobPriorities = await _context.JobPriorities.ToListAsync(),
                     JobStatuses = await _context.JobStatuses.ToListAsync(),
-                    User = job.User,
+                    User = job.CreationUser,
                     PageTitle = "New job"
                 };
                 return View("JobForm", viewModel);
@@ -73,14 +73,14 @@ namespace ToDoList.Controllers
             try
             {
                 viewModel.JobPriorities = await _context.JobPriorities.ToListAsync<JobPriority>();
-                viewModel.JobStatuses = await _context.JobStatuses.ToListAsync<JobStatus>();
-                viewModel.User = await _userManager.GetUserAsync(User);
+                viewModel.JobStatuses = await _context.JobStatuses.ToListAsync<JobStatus>();                
             }
             catch (Exception ex)
             {
                 return RedirectToAction("Error", "Home", new { errorMessage = ex.Message });
             }
 
+            viewModel.User = User.Identity.Name;
             viewModel.Job = new Job();
             viewModel.PageTitle = "New Job";
 
@@ -90,14 +90,14 @@ namespace ToDoList.Controllers
         public async Task<IActionResult> Edit(int id)
         {
             NewJobViewModel viewModel = new NewJobViewModel();
+            Job job;
             try
             {
-                Job job = await _context.Jobs.SingleOrDefaultAsync<Job>(j => j.Id == id);
+                job = await _context.Jobs.SingleOrDefaultAsync<Job>(j => j.Id == id);
                 if (job is null)
                     return NotFound();
 
                 viewModel.Job = job;
-                viewModel.User = await _userManager.GetUserAsync(User);
                 viewModel.JobPriorities = await _context.JobPriorities.ToListAsync<JobPriority>();
                 viewModel.JobStatuses = await _context.JobStatuses.ToListAsync<JobStatus>();
             }
@@ -105,6 +105,8 @@ namespace ToDoList.Controllers
             {
                 return RedirectToAction("Error", "Home", new { errorMessage = ex.Message });
             }
+
+            viewModel.User = job.CreationUser;
             viewModel.PageTitle = "Edit Job";
 
             return View("JobForm", viewModel);

@@ -23,7 +23,7 @@ namespace ToDoList.Models
         [Display(Name = "Deadline")]
         public DateTime DueDate { get; set; }
 
-        public IdentityUser User { get; set; }
+        public string CreationUser { get; set; }
 
         public bool IsDone { get; set; }
 
