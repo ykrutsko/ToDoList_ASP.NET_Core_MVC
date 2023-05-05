@@ -1,4 +1,10 @@
-﻿@model ToDoList.ViewModels.AppViewModel
+﻿@using Microsoft.AspNetCore.Identity;
+@model ToDoList.ViewModels.AppViewModel
+
+@*@{
+    ViewBag.Title = "Issues";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}*@
 
 <h1>Tasks</h1>
 
@@ -20,50 +26,50 @@
 </div>
 <div class="space"></div>
 
-<table id="jobs" class="table" data-paging="false" data-ordering="true"></table>
+<table id="Jobs" class="table" data-paging="false" data-ordering="true"></table>
 
 @section scripts {
 
     <script>
-                $(document).ready(function () {
+        $(document).ready(function () {
 
             //building a table
             var tbl = $("#Jobs").DataTable({
-                    ajax: {
+                ajax: {
                     url: "/api/Jobs/",
                     dataSrc: ""
                 },
 
                 columns: [
                     {
-                    title: "Title",
+                        title: "Title",
                         data: "name",
-                        render: function (data, type, job) {
-                            if (job.isDone == false) {
+                        render: function (data, type, issue) {
+                            if (issue.isDone == false) {
                                 var result = "<a href='job/edit/" + job.id + "'>" + job.name + "</a>";
                             }
                             else {
-                    result = data;
+                                result = data;
                             }
                             return result;
                         }
                     },
                     {
-                    title: "Creation Date",
-                        data: "createdDate",
+                        title: "Creation Date",
+                        data: "creationDate",
                         render: function (data) {
                             var date = new Date(data);
                             var month = date.getMonth() + 1;
                             var day = date.getDate();
                             var m = month.toString().length > 1 ? month : "0" + month;
                             var d = day.toString().length > 1 ? day : "0" + day;
-                            var result = d + "." + m + "." + date.getFullYear();
+                            var result = m + "/" + d + "/" + date.getFullYear();
                             return "<p>" + result + "</p>";
                         }
                     },
 
                     {
-                    title: "Deadline",
+                        title: "Deadline",
                         data: "dueDate",
                         render: function (data) {
                             var date = new Date(data);
@@ -77,27 +83,27 @@
                     },
 
                     {
-                    title: "Priority",
+                        title: "Priority",
                         data: "jobPriority.name"
                     },
 
                     {
-                    title: "Status",
+                        title: "Status",
                         data: "jobStatus.name"
                     },
 
                     {
-                    title: "User",
-                        data: "User"
+                        title: "User",
+                        data: "creationUser"
                     },
 
                     {
-                    title: "Done",
+                        title: "Done",
                         data: "isDone"
                     },
 
                     {
-                    data: "id",
+                        data: "id",
                         render: function (data, type, job) {
                             if (job.isDone == false) {
                                 var result = "<a class='btn btn-sm btn-primary js-complete' href='/job/complete/" + data + "'>Complete</a> <button class='btn btn-sm btn-primary js-delete' data-job-id=" + data + ">Delete</button> <a class='btn btn-sm btn-primary' href='/job/edit/" + data + "'>Edit</a>";
@@ -133,8 +139,8 @@
             tbl.column(6).visible(false);
 
             //setting custom search
-            $('#form1').on('keyup', function () {
-                    tbl.search($(this).val()).draw();
+            $('#searchForm').on('keyup', function () {
+                tbl.search($(this).val()).draw();
             });
 
             //bootbox delete function
@@ -143,24 +149,24 @@
                 bootbox.confirm({
                     message: "Do you want to delete this Task?",
                     buttons: {
-                    confirm: {
-                    label: 'Yes',
+                        confirm: {
+                            label: 'Yes',
                             className: 'btn-secondary'
                         },
                         cancel: {
-                    label: 'No',
+                            label: 'No',
                             className: 'btn-primary'
                         }
                     },
                     callback: function (result) {
                         if (result) {
-                    $.ajax({
-                        url: "/api/Jobs/" + button.attr("data-Job-id"),
-                        method: "DELETE",
-                        success: function () {
-                            tbl.row(button.parents("tr")).remove().draw();
-                        }
-                    });
+                            $.ajax({
+                                url: "/api/Jobs/" + button.attr("data-Job-id"),
+                                method: "DELETE",
+                                success: function () {
+                                    tbl.row(button.parents("tr")).remove().draw();
+                                }
+                            });
                         }
                     }
                 });
@@ -171,4 +177,13 @@
     </script>
 
 }
+
+
+
+
+
+
+
+
+
 
