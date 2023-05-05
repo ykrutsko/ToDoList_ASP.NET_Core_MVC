@@ -63,13 +63,18 @@ namespace ToDoList.Controllers
 
             if (jobStatus == null)
             {
-                JobStatus newJobStatus = new JobStatus
+                if (string.IsNullOrEmpty(model.StatusName))
+                    TempData["Error"] = "Status name is required!";
+                else
                 {
-                    Name = model.StatusName
-                };
-                await _context.JobStatuses.AddAsync(newJobStatus);
-                await _context.SaveChangesAsync();
-                return RedirectToAction("Index");
+                    JobStatus newJobStatus = new JobStatus
+                    {
+                        Name = model.StatusName
+                    };
+                    await _context.JobStatuses.AddAsync(newJobStatus);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction("Index");
+                }
             }
             else
             {
