@@ -11,7 +11,7 @@
 
 <div class="panel">
     <div>
-        @Html.ActionLink("New Task", "New", "Task", null, new { @class = "btn btn-sm btn-primary panel" })
+        @Html.ActionLink("New Task", "New", "Job", null, new { @class = "btn btn-sm btn-primary panel" })
     </div>
     <div class="space"></div>
     <div class="form-check panel">
@@ -52,14 +52,14 @@
                     },
                     {
                     title: "Creation Date",
-                        data: "creationDate",
+                        data: "createdDate",
                         render: function (data) {
                             var date = new Date(data);
                             var month = date.getMonth() + 1;
                             var day = date.getDate();
                             var m = month.toString().length > 1 ? month : "0" + month;
                             var d = day.toString().length > 1 ? day : "0" + day;
-                            var result = m + "/" + d + "/" + date.getFullYear();
+                            var result = d + "." + m + "." + date.getFullYear();
                             return "<p>" + result + "</p>";
                         }
                     },

@@ -1,5 +1,89 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@model ToDoList.ViewModels.NewJobViewModel
+
+<h4 id="PageTitle">@Model.PageTitle</h4>
+
+@using (Html.BeginForm("Save", "Issue"))
+{
+    <div class="form-group">
+        @Html.LabelFor(m => m.Job.Name)
+        @Html.TextBoxFor(m => m.Job.Name, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Job.Name)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.User)
+        @Html.TextBoxFor(m => m.User, new { @class = "form-control", @readonly = "readonly", @id = "CreationUserId" })
+        @Html.ValidationMessageFor(m => m.User)
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <div class="form-group">
+                @Html.LabelFor(m => m.Job.CreatedDate)
+                @Html.TextBoxFor(m => m.Job.CreatedDate, "{0:dd.MM.yyyy}", new { @class = "form-control", @readonly = "readonly", @id = "CreationDateField" })
+                @Html.ValidationMessageFor(m => m.Job.CreatedDate)
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-group dueDate">
+                @Html.LabelFor(m => m.Job.DueDate)
+                @Html.TextBoxFor(m => m.Job.DueDate, "{0:MM/dd/yyyy}", new { @class = "form-control", @id = "DueDateField" })
+                @Html.ValidationMessageFor(m => m.Job.DueDate)
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-group">
+                @Html.LabelFor(m => m.Job.JobPriorityId)
+                @Html.DropDownListFor(m => m.Job.JobPriorityId, new SelectList(Model.JobPriorities, "Id", "Name"), "Select the priority", new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Job.JobPriorityId)
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-group">
+                @Html.LabelFor(m => m.Job.JobStatusId)
+                @Html.DropDownListFor(m => m.Job.JobStatusId, new SelectList(Model.JobStatuses, "Id", "Name"), "Select the status", new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Job.JobStatusId)
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Job.Description)
+        @Html.TextAreaFor(m => m.Job.Description, new { @class = "form-control" })
+    </div>
+
+    @Html.HiddenFor(m => m.Job.User, new { @id = "CreationUser" })
+    @Html.HiddenFor(m => m.Job.Id)
+    @Html.AntiForgeryToken()
+    <button id="SaveButton" type="submit" class="btn btn-primary">Save</button>
+    <a class="btn btn-primary" href="/Job/Index">Back</a>
 }
+
+@section scripts
+        {
+    <script>
+        $(document).ready(function () {
+            //Passing the CreationUser
+            var userId = $('#CreationUserId').val();
+            $('#CreationUser').val(userId);
+            //Checking the Date
+            var now = new Date();
+            var today = ("0" + (now.getMonth() + 1)).slice(-2) + "."
+                + ("0" + now.getDate()).slice(-2) + "." + now.getFullYear();
+            if ($("#PageTitle").text() == "New Task") {
+                $('#CreationDateField').val(today),
+                    $('#DueDateField').val(today)
+            }
+
+            $("#SaveButton").click(function (e) {
+                var creationDate = new Date($("#CreationDateField").val());
+                var dueDate = new Date($("#DueDateField").val());
+                if (Date.parse(creationDate) > Date.parse(dueDate)) {
+                    bootbox.alert("Deadline can't be before the Creation Date!");
+                    e.preventDefault();
+                }
+            })
+        });
+
+    </script>
+    }
