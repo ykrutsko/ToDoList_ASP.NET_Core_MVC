@@ -13,14 +13,11 @@ namespace ToDoList.Controllers
     public class JobController : Controller
     {
         private readonly AppDbContext _context;
-        //private readonly UserManager<IdentityUser> _userManager;
 
-        public JobController(AppDbContext context /*UserManager<IdentityUser> userManager*/)
+        public JobController(AppDbContext context)
         {
             _context = context;
-            //_userManager = userManager;
         }
-
 
         public async Task<IActionResult> Index()
         {
