@@ -9,9 +9,5 @@ namespace ToDoList.ViewModels
         public string PageTitle { get; set; }
         public string User { get; set; }
         public string UserId { get; set; }
-        public NewJobViewModel() :base()
-        {
-            
-        }
     }
 }

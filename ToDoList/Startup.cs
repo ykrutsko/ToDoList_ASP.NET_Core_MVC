@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
@@ -8,12 +9,15 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Policy;
 using System.Threading.Tasks;
 using ToDoList.Data;
 using ToDoList.Models;
+
 
 namespace ToDoList
 {
@@ -39,6 +43,11 @@ namespace ToDoList
 
             services.AddControllersWithViews();
 
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "ToDoList Api", Version = "v1" });
+            });
+
             services.AddRazorPages();
         }
 
@@ -63,6 +72,33 @@ namespace ToDoList
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.Use(async (context, next) =>
+            {
+                if (context.Request.Path.StartsWithSegments("/swagger"))
+                {
+                    if (!context.User.Identity.IsAuthenticated)
+                    {
+                         context.Response.Redirect("/Identity/Account/Login");
+                        return;
+                    }
+
+                    if (!context.User.IsInRole("admin"))
+                    {
+                        context.Response.StatusCode = StatusCodes.Status403Forbidden;
+                        await context.Response.WriteAsync("Access Denied. Only administrators are allowed.");
+                        return;
+                    }
+                }
+
+                await next();
+            });
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c=>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "ToDoList API");
+            });
 
             app.UseEndpoints(endpoints =>
             {

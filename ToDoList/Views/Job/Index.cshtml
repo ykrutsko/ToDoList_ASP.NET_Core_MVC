@@ -7,22 +7,26 @@
 <h1>Tasks</h1>
 
 <div class="form-group">
-    <input type="search" id="form1" class="form-control" placeholder="Search" aria-label="Search" />
+    <input type="search" id="searchForm" class="form-control" placeholder="Search" aria-label="Search" />
 </div>
 <div class="space"></div>
 
-<div class="panel d-flex align-items-center justify-content-between">
-    <div>
-        @Html.ActionLink("New Task", "New", "Job", null, new { @class = "btn btn-sm btn-primary panel" })
-    </div>
-    <div class="form-check panel">
-        <input class="form-check-input" type="checkbox" id="checkbox" name="hidetasks" value="True" />
-        <label class="form-check-label ml-2" for="hidetasks">Hide completed tasks</label>
+<div class="panel">
+    <div class="d-flex align-items-center">
+        <div>
+            @Html.ActionLink("New Task", "New", "Job", null, new { @class = "btn btn-sm btn-primary panel" })
+        </div>
+        <div class="form-check panel ml-3">
+            <input class="form-check-input" type="checkbox" id="checkbox" name="hidetasks" value="True" />
+            <label class="form-check-label ml-2" for="hidetasks">Hide completed tasks</label>
+        </div>
     </div>
 </div>
 
-<div class="space"></div>
 
+<div class="mb-4"></div>
+<table id="Jobs" class="table" data-paging="false" data-ordering="true"></table>
+<div class="space"></div>
 <table id="Jobs" class="table" data-paging="false" data-ordering="true"></table>
 
 
