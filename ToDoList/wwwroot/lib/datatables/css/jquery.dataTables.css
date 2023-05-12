@@ -1,6 +1,14 @@
 /*
  * Table styles
  */
+.dataTables_filter {
+    display: none;
+}
+
+.dataTables_info {
+    display: none;
+}
+
 table.dataTable {
   width: 100%;
   margin: 0 auto;

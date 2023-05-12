@@ -66,20 +66,25 @@
 }
 
 @section scripts
-        {
+    {
     <script>
         $(document).ready(function () {
-            //Passing the CreationUser
+            // Passing the CreationUser
             var userId = $('#CreationUserId').val();
             $('#CreationUser').val(userId);
 
-            //Checking the Date
+            // Checking the Date
             var now = new Date();
-            var today = now.getFullYear() + "-" + ("0" + (now.getMonth() + 1)).slice(-2) + "-"
-                + ("0" + now.getDate()).slice(-2);
-            if ($("#PageTitle").text() == "New Task") {
-                $('#CreationDateField').val(today),
-                    $('#DueDateField').val(today)
+            var today = now.getFullYear() + "-" + ("0" + (now.getMonth() + 1)).slice(-2) + "-" + ("0" + now.getDate()).slice(-2);
+            if ($("#PageTitle").text() === "New Task") {
+                $('#CreationDateField').val(today);
+                $('#DueDateField').val(today);
+
+                // +7 days to DueDate
+                var creationDate = new Date($("#CreationDateField").val());
+                var dueDate = new Date(creationDate.getFullYear(), creationDate.getMonth(), creationDate.getDate() + 7);
+                var formattedDueDate = formatDate(dueDate);
+                $("#DueDateField").val(formattedDueDate);
             }
 
             $("#SaveButton").click(function (e) {
@@ -89,8 +94,14 @@
                     bootbox.alert("Deadline can't be before the Creation Date!");
                     e.preventDefault();
                 }
-            })
+            });
         });
 
+        function formatDate(date) {
+            var year = date.getFullYear();
+            var month = ("0" + (date.getMonth() + 1)).slice(-2);
+            var day = ("0" + date.getDate()).slice(-2);
+            return year + "-" + month + "-" + day;
+        }
     </script>
     }

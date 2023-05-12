@@ -85,7 +85,7 @@ namespace ToDoList.Controllers
             }
 
             viewModel.User = User.Identity.Name;
-            viewModel.Job = new Job() { CreatedDate = DateTime.Now, DueDate= DateTime.Now.AddDays(7) };
+            viewModel.Job = new Job();
             viewModel.PageTitle = "New Task";
             return View("JobForm", viewModel);
         }

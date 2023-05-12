@@ -13,5 +13,10 @@ namespace ToDoList.ViewModels
         public JobStatus JobStatus { get; set; }
         public List<JobStatus> JobStatuses { get; set; }
         public IdentityUser CurrentUser { get; set; }
+
+        public AppViewModel()
+        {
+            
+        }
     }
 }
