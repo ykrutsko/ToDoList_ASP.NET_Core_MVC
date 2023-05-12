@@ -1,6 +1,12 @@
 ﻿@model ToDoList.ViewModels.NewJobViewModel
 
-<h4 id="PageTitle">@Model.PageTitle</h4>
+<style>
+    .field-validation-error {
+        color: red;
+    }
+</style>
+
+<h1 id="PageTitle">@Model.PageTitle</h1>
 
 @using (Html.BeginForm("Save", "Job"))
 {
@@ -20,19 +26,14 @@
         <div class="col">
             <div class="form-group">
                 @Html.LabelFor(m => m.Job.CreatedDate)
-                @Html.TextBoxFor(m => m.Job.CreatedDate, "{0:MM/dd/yyyy}", new { @class = "form-control", @readonly = "readonly", @id = "CreationDateField" })
+                @Html.TextBoxFor(m => m.Job.CreatedDate, "{0:yyyy-MM-dd}", new { @type = "date", @class = "form-control", @readonly = "readonly", @id = "CreationDateField" })
                 @Html.ValidationMessageFor(m => m.Job.CreatedDate)
             </div>
         </div>
         <div class="col">
             <div class="form-group dueDate">
                 @Html.LabelFor(m => m.Job.DueDate)
-                @{
-                    DateTime currentDate = DateTime.Now;
-                    DateTime nextWeek = currentDate.AddDays(7);
-                    string nextWeekFormatted = nextWeek.ToString("yyyy-MM-dd");
-                }
-                @Html.TextBoxFor(m => m.Job.DueDate, nextWeekFormatted, new { @type = "date", @class = "form-control", @id = "DueDateField" })
+                @Html.TextBoxFor(m => m.Job.DueDate, "{0:yyyy-MM-dd}", new { @type = "date", @class = "form-control", @id = "DueDateField" })
                 @Html.ValidationMessageFor(m => m.Job.DueDate)
             </div>
         </div>
@@ -71,10 +72,11 @@
             //Passing the CreationUser
             var userId = $('#CreationUserId').val();
             $('#CreationUser').val(userId);
+
             //Checking the Date
             var now = new Date();
-            var today = ("0" + (now.getMonth() + 1)).slice(-2) + "/"
-                + ("0" + now.getDate()).slice(-2) + "/" + now.getFullYear();
+            var today = now.getFullYear() + "-" + ("0" + (now.getMonth() + 1)).slice(-2) + "-"
+                + ("0" + now.getDate()).slice(-2);
             if ($("#PageTitle").text() == "New Task") {
                 $('#CreationDateField').val(today),
                     $('#DueDateField').val(today)

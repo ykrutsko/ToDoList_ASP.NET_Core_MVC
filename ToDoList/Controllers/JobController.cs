@@ -58,7 +58,14 @@ namespace ToDoList.Controllers
             else
             {
                 Job jobInDB = await _context.Jobs.SingleAsync(j => j.Id == job.Id);
-                TryValidateModel(jobInDB);
+
+                jobInDB.Name = job.Name;
+                jobInDB.Description = job.Description;
+                jobInDB.CreatedDate = job.CreatedDate;
+                jobInDB.DueDate = job.DueDate;
+                jobInDB.JobPriorityId = job.JobPriorityId;
+                jobInDB.JobStatusId = job.JobStatusId;
+                jobInDB.CreationUser = job.CreationUser;
             }
             await _context.SaveChangesAsync();
             return RedirectToAction("Index", "Job");
@@ -70,7 +77,7 @@ namespace ToDoList.Controllers
             try
             {
                 viewModel.JobPriorities = await _context.JobPriorities.ToListAsync<JobPriority>();
-                viewModel.JobStatuses = await _context.JobStatuses.ToListAsync<JobStatus>();                
+                viewModel.JobStatuses = await _context.JobStatuses.ToListAsync<JobStatus>();
             }
             catch (Exception ex)
             {
@@ -78,9 +85,8 @@ namespace ToDoList.Controllers
             }
 
             viewModel.User = User.Identity.Name;
-            viewModel.Job = new Job();
-            viewModel.PageTitle = "New Job";
-
+            viewModel.Job = new Job() { CreatedDate = DateTime.Now, DueDate= DateTime.Now.AddDays(7) };
+            viewModel.PageTitle = "New Task";
             return View("JobForm", viewModel);
         }
 
@@ -104,7 +110,7 @@ namespace ToDoList.Controllers
             }
 
             viewModel.User = job.CreationUser;
-            viewModel.PageTitle = "Edit Job";
+            viewModel.PageTitle = "Edit Task";
 
             return View("JobForm", viewModel);
         }

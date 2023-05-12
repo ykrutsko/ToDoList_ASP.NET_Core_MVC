@@ -54,15 +54,15 @@
                         }
                     },
                     {
-                        title: "Deadline",
-                        data: "dueDate",
+                        title: "Creation Date",
+                        data: "createdDate",
                         render: function (data) {
                             var date = new Date(data);
                             var month = date.getMonth() + 1;
                             var day = date.getDate();
                             var m = month.toString().length > 1 ? month : "0" + month;
                             var d = day.toString().length > 1 ? day : "0" + day;
-                            var result = m + "/" + d + "/" + date.getFullYear();
+                            var result = d + "." + m + "." + date.getFullYear();
                             return "<p>" + result + "</p>";
                         }
                     },
@@ -76,7 +76,7 @@
                             var day = date.getDate();
                             var m = month.toString().length > 1 ? month : "0" + month;
                             var d = day.toString().length > 1 ? day : "0" + day;
-                            var result = d + "/" + m + "/" + date.getFullYear();
+                            var result = d + "." + m + "." + date.getFullYear();
                             return "<p>" + result + "</p>";
                         }
                     },
